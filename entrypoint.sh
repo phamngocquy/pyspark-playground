@@ -9,7 +9,10 @@ then
   start-master.sh -p 7077
 elif [ "$SPARK_WORKLOAD" == "worker" ];
 then
-  start-worker.sh spark://spark-master:7077
+  start-worker.sh spark://spark-master:7077 --cores 2
+elif [ "$SPARK_WORKLOAD" == "connect" ];
+then
+  start-connect-server.sh --packages org.apache.spark:spark-connect_2.12:3.5.1
 elif [ "$SPARK_WORKLOAD" == "history" ]
 then
   start-history-server.sh

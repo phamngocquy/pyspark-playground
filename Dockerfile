@@ -1,6 +1,6 @@
 FROM python:3.10-bullseye as spark-base
 
-ARG SPARK_VERSION=3.3.3
+ARG SPARK_VERSION=3.5.1
 
 # Install tools required by the OS
 RUN apt-get update && \
@@ -29,7 +29,6 @@ WORKDIR ${SPARK_HOME}
 RUN curl https://dlcdn.apache.org/spark/spark-${SPARK_VERSION}/spark-${SPARK_VERSION}-bin-hadoop3.tgz -o spark-${SPARK_VERSION}-bin-hadoop3.tgz \
  && tar xvzf spark-${SPARK_VERSION}-bin-hadoop3.tgz --directory /opt/spark --strip-components 1 \
  && rm -rf spark-${SPARK_VERSION}-bin-hadoop3.tgz
-
 
 FROM spark-base as pyspark
 
