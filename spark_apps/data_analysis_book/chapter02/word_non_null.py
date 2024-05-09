@@ -1,9 +1,12 @@
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import col, explode, lower, regexp_extract, split
+import os
 
-spark = SparkSession.builder.appName(
-    "Ch02 - Analyzing the vocabulary of Pride and Prejudice."
-).getOrCreate()
+# spark = SparkSession.builder.appName(
+#     "Ch02 - Analyzing the vocabulary of Pride and Prejudice."
+# ).setMaster.getOrCreate()
+
+spark = SparkSession.builder.remote("sc://localhost:15002").getOrCreate()
 
 book = spark.read.text("/opt/spark/data/pride-and-prejudice.txt")
 

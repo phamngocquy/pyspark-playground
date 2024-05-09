@@ -1,6 +1,8 @@
 FROM python:3.10-bullseye as spark-base
 
+ARG SPARK_MAJOR_VERSION=3.5
 ARG SPARK_VERSION=3.5.1
+ARG ICEBERG_VERSION=1.5.1
 
 # Install tools required by the OS
 RUN apt-get update && \
@@ -29,6 +31,10 @@ WORKDIR ${SPARK_HOME}
 RUN curl https://dlcdn.apache.org/spark/spark-${SPARK_VERSION}/spark-${SPARK_VERSION}-bin-hadoop3.tgz -o spark-${SPARK_VERSION}-bin-hadoop3.tgz \
  && tar xvzf spark-${SPARK_VERSION}-bin-hadoop3.tgz --directory /opt/spark --strip-components 1 \
  && rm -rf spark-${SPARK_VERSION}-bin-hadoop3.tgz
+
+# Download iceberg spark runtime
+RUN curl https://repo1.maven.org/maven2/org/apache/iceberg/iceberg-spark-runtime-${SPARK_MAJOR_VERSION}_2.12/${ICEBERG_VERSION}/iceberg-spark-runtime-${SPARK_MAJOR_VERSION}_2.12-${ICEBERG_VERSION}.jar -Lo /opt/spark/jars/iceberg-spark-runtime-${SPARK_MAJOR_VERSION}_2.12-${ICEBERG_VERSION}.jar
+
 
 FROM spark-base as pyspark
 
