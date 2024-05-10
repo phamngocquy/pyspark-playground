@@ -35,6 +35,10 @@ RUN curl https://dlcdn.apache.org/spark/spark-${SPARK_VERSION}/spark-${SPARK_VER
 # Download iceberg spark runtime
 RUN curl https://repo1.maven.org/maven2/org/apache/iceberg/iceberg-spark-runtime-${SPARK_MAJOR_VERSION}_2.12/${ICEBERG_VERSION}/iceberg-spark-runtime-${SPARK_MAJOR_VERSION}_2.12-${ICEBERG_VERSION}.jar -Lo /opt/spark/jars/iceberg-spark-runtime-${SPARK_MAJOR_VERSION}_2.12-${ICEBERG_VERSION}.jar
 
+# Download Postgres JDBC driver
+RUN curl https://jdbc.postgresql.org/download/postgresql-42.6.0.jar -o postgresql-42.6.0.jar \
+    && mv postgresql-42.6.0.jar /opt/spark/jars/postgresql-42.6.0.jar
+
 
 FROM spark-base as pyspark
 
