@@ -79,18 +79,31 @@ services:
     container_name: da-spark-hive
     image: apache/hive:4.0.0
     volumes:
-     - ./warehouse:/warehouse
-     - ./postgresql-42.6.0.jar:/opt/hive/lib/postgresql-42.6.0.jar
-     - ./hive-site.xml:/opt/hive/conf/hive-site.xml
+      - ./warehouse:/warehouse
+      - ./postgresql-42.6.0.jar:/opt/hive/lib/postgresql-42.6.0.jar
+      - ./hive-site.xml:/opt/hive/conf/hive-site.xml
     depends_on:
       - spark-master
       - postgres-db
     environment:
       - SERVICE_NAME=metastore
       - DB_DRIVER=postgres
-
     ports:
       - '9083:9083'
-
+  dremio:
+    platform: linux/x86_64
+    image: dremio/dremio-oss:latest
+    ports:
+      - 9047:9047
+      - 31010:31010
+      - 32010:32010
+    container_name: dremio
+    volumes:
+      - ./warehouse:/warehouse
+  superset:
+    image: alexmerced/dremio-superset
+    container_name: superset
+    ports:
+      - 8088:8088
 volumes:
   spark-logs:
