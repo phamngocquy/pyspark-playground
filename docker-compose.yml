@@ -62,18 +62,35 @@ services:
       - '15002:15002'
   postgres-db:
     container_name: da-postgres-db
-    image: postgres:16
+    image: postgres:14.1
     depends_on:
       - spark-master
     environment:
       POSTGRES_PASSWORD: postgres
       POSTGRES_USER: postgres
-      POSTGRES_DB: iceberg_db
+      POSTGRES_DB: metastore_db
     healthcheck:
       test: ["CMD", "pg_isready", "-U", "postgres"]
       interval: 5s
       retries: 5
     ports:
       - '5432:5432'
+  hive-mds:
+    container_name: da-spark-hive
+    image: apache/hive:4.0.0
+    volumes:
+     - ./warehouse:/warehouse
+     - ./postgresql-42.6.0.jar:/opt/hive/lib/postgresql-42.6.0.jar
+     - ./hive-site.xml:/opt/hive/conf/hive-site.xml
+    depends_on:
+      - spark-master
+      - postgres-db
+    environment:
+      - SERVICE_NAME=metastore
+      - DB_DRIVER=postgres
+
+    ports:
+      - '9083:9083'
+
 volumes:
   spark-logs:
