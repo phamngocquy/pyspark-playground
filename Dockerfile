@@ -1,8 +1,8 @@
 FROM python:3.10-bullseye as spark-base
 
 ARG SPARK_MAJOR_VERSION=3.5
-ARG SPARK_VERSION=3.5.1
-ARG ICEBERG_VERSION=1.5.1
+ARG SPARK_VERSION=3.5.2
+ARG ICEBERG_VERSION=1.6.1
 
 # Install tools required by the OS
 RUN apt-get update && \
